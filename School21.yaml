@@ -1,0 +1,346 @@
+title: clippy
+emojis:
+  - name: a
+    src: https://raw.githubusercontent.com/rovell/emoji/main/a.png
+  - name: aa
+    src: https://raw.githubusercontent.com/rovell/emoji/main/aa.png
+  - name: alarm
+    src: https://raw.githubusercontent.com/rovell/emoji/main/alarm.gif
+  - name: atfinnfly
+    src: https://raw.githubusercontent.com/rovell/emoji/main/atfinnfly.gif
+  - name: b
+    src: https://raw.githubusercontent.com/rovell/emoji/main/b.png
+  - name: baby-yoda-soup
+    src: https://raw.githubusercontent.com/rovell/emoji/main/baby-yoda-soup.gif
+  - name: backwards_parrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/backwards_parrot.gif
+  - name: bb
+    src: https://raw.githubusercontent.com/rovell/emoji/main/bb.png
+  - name: bedge
+    src: https://raw.githubusercontent.com/rovell/emoji/main/bedge.png
+  - name: bigcat
+    src: https://raw.githubusercontent.com/rovell/emoji/main/bigcat.gif
+  - name: bmodance
+    src: https://raw.githubusercontent.com/rovell/emoji/main/bmodance.gif
+  - name: bongocat
+    src: https://raw.githubusercontent.com/rovell/emoji/main/bongocat.gif
+  - name: bongocat_code
+    src: https://raw.githubusercontent.com/rovell/emoji/main/bongocat_code.gif
+  - name: burn_it
+    src: https://raw.githubusercontent.com/rovell/emoji/main/burn_it.gif
+  - name: c
+    src: https://raw.githubusercontent.com/rovell/emoji/main/c.png
+  - name: cat_dance
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cat_dance.gif
+  - name: cat_myaa
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cat_myaa.gif
+  - name: cat_nope
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cat_nope.gif
+  - name: cat_smile
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cat_smile.jpeg
+  - name: cat_typing
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cat_typing.gif
+  - name: cat_yes
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cat_yes.gif
+  - name: catjam
+    src: https://raw.githubusercontent.com/rovell/emoji/main/catjam.gif
+  - name: catjam_fast
+    src: https://raw.githubusercontent.com/rovell/emoji/main/catjam_fast.gif
+  - name: cavemanspongebob
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cavemanspongebob.gif
+  - name: cc
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cc.png
+  - name: chatting
+    src: https://raw.githubusercontent.com/rovell/emoji/main/chatting.gif
+  - name: clapping_corgi
+    src: https://raw.githubusercontent.com/rovell/emoji/main/clapping_corgi.gif
+  - name: cryingcat
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cryingcat.png
+  - name: cute_hopeless_pepe
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cute_hopeless_pepe.png
+  - name: cutedog
+    src: https://raw.githubusercontent.com/rovell/emoji/main/cutedog.gif
+  - name: d
+    src: https://raw.githubusercontent.com/rovell/emoji/main/d.png
+  - name: da
+    src: https://raw.githubusercontent.com/rovell/emoji/main/da.png
+  - name: dd
+    src: https://raw.githubusercontent.com/rovell/emoji/main/dd.png
+  - name: dog_eating
+    src: https://raw.githubusercontent.com/rovell/emoji/main/dog_eating.gif
+  - name: doge
+    src: https://raw.githubusercontent.com/rovell/emoji/main/doge.png
+  - name: doge_dance
+    src: https://raw.githubusercontent.com/rovell/emoji/main/doge_dance.gif
+  - name: dogeheart
+    src: https://raw.githubusercontent.com/rovell/emoji/main/dogeheart.png
+  - name: drakeno
+    src: https://raw.githubusercontent.com/rovell/emoji/main/drakeno.png
+  - name: durka
+    src: https://raw.githubusercontent.com/rovell/emoji/main/durka.png
+  - name: dushno
+    src: https://raw.githubusercontent.com/rovell/emoji/main/dushno.png
+  - name: e
+    src: https://raw.githubusercontent.com/rovell/emoji/main/e.png
+  - name: ee
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ee.png
+  - name: evil_parrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/evil_parrot.gif
+  - name: f
+    src: https://raw.githubusercontent.com/rovell/emoji/main/f.png
+  - name: facepalm
+    src: https://raw.githubusercontent.com/rovell/emoji/main/facepalm.png
+  - name: fake
+    src: https://raw.githubusercontent.com/rovell/emoji/main/fake.gif
+  - name: ff
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ff.png
+  - name: flying_money_parrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/flying_money_parrot.gif
+  - name: froge_bonk
+    src: https://raw.githubusercontent.com/rovell/emoji/main/froge_bonk.gif
+  - name: fry
+    src: https://raw.githubusercontent.com/rovell/emoji/main/fry.jpeg
+  - name: g
+    src: https://raw.githubusercontent.com/rovell/emoji/main/g.png
+  - name: gg
+    src: https://raw.githubusercontent.com/rovell/emoji/main/gg.png
+  - name: h
+    src: https://raw.githubusercontent.com/rovell/emoji/main/h.png
+  - name: hackermans
+    src: https://raw.githubusercontent.com/rovell/emoji/main/hackermans.gif
+  - name: haha
+    src: https://raw.githubusercontent.com/rovell/emoji/main/haha.jpeg
+  - name: happy
+    src: https://raw.githubusercontent.com/rovell/emoji/main/happy.gif
+  - name: harold
+    src: https://raw.githubusercontent.com/rovell/emoji/main/harold.jpeg
+  - name: hearth21
+    src: https://raw.githubusercontent.com/rovell/emoji/main/hearth21.gif
+  - name: hellokittywave
+    src: https://raw.githubusercontent.com/rovell/emoji/main/hellokittywave.gif
+  - name: hh
+    src: https://raw.githubusercontent.com/rovell/emoji/main/hh.png
+  - name: hide
+    src: https://raw.githubusercontent.com/rovell/emoji/main/hide.gif
+  - name: homey
+    src: https://raw.githubusercontent.com/rovell/emoji/main/homey.gif
+  - name: i
+    src: https://raw.githubusercontent.com/rovell/emoji/main/i.png
+  - name: ii
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ii.png
+  - name: j
+    src: https://raw.githubusercontent.com/rovell/emoji/main/j.png
+  - name: jammies
+    src: https://raw.githubusercontent.com/rovell/emoji/main/jammies.gif
+  - name: jj
+    src: https://raw.githubusercontent.com/rovell/emoji/main/jj.png
+  - name: k
+    src: https://raw.githubusercontent.com/rovell/emoji/main/k.png
+  - name: kek
+    src: https://raw.githubusercontent.com/rovell/emoji/main/kek.png
+  - name: kekewait
+    src: https://raw.githubusercontent.com/rovell/emoji/main/kekewait.png
+  - name: kekw
+    src: https://raw.githubusercontent.com/rovell/emoji/main/kekw.png
+  - name: kitten
+    src: https://raw.githubusercontent.com/rovell/emoji/main/kitten.gif
+  - name: kk
+    src: https://raw.githubusercontent.com/rovell/emoji/main/kk.png
+  - name: kostyl
+    src: https://raw.githubusercontent.com/rovell/emoji/main/kostyl.png
+  - name: l
+    src: https://raw.githubusercontent.com/rovell/emoji/main/l.png
+  - name: library
+    src: https://raw.githubusercontent.com/rovell/emoji/main/library.gif
+  - name: linkedin
+    src: https://raw.githubusercontent.com/rovell/emoji/main/linkedin.png
+  - name: ll
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ll.png
+  - name: lockscreen
+    src: https://raw.githubusercontent.com/rovell/emoji/main/lockscreen.png
+  - name: lol
+    src: https://raw.githubusercontent.com/rovell/emoji/main/lol.gif
+  - name: lovemeow
+    src: https://raw.githubusercontent.com/rovell/emoji/main/lovemeow.gif
+  - name: lurking
+    src: https://raw.githubusercontent.com/rovell/emoji/main/lurking.gif
+  - name: m
+    src: https://raw.githubusercontent.com/rovell/emoji/main/m.png
+  - name: mike
+    src: https://raw.githubusercontent.com/rovell/emoji/main/mike.png
+  - name: mm
+    src: https://raw.githubusercontent.com/rovell/emoji/main/mm.png
+  - name: modcheck
+    src: https://raw.githubusercontent.com/rovell/emoji/main/modcheck.gif
+  - name: monkajesus
+    src: https://raw.githubusercontent.com/rovell/emoji/main/monkajesus.png
+  - name: monkax
+    src: https://raw.githubusercontent.com/rovell/emoji/main/monkax.gif
+  - name: monkey_look
+    src: https://raw.githubusercontent.com/rovell/emoji/main/monkey_look.gif
+  - name: monkeyshock
+    src: https://raw.githubusercontent.com/rovell/emoji/main/monkeyshock.gif
+  - name: n
+    src: https://raw.githubusercontent.com/rovell/emoji/main/n.png
+  - name: net
+    src: https://raw.githubusercontent.com/rovell/emoji/main/net.png
+  - name: ng_parrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ng_parrot.gif
+  - name: nn
+    src: https://raw.githubusercontent.com/rovell/emoji/main/nn.png
+  - name: none
+    src: https://raw.githubusercontent.com/rovell/emoji/main/none.jpeg
+  - name: nyancat
+    src: https://raw.githubusercontent.com/rovell/emoji/main/nyancat.gif
+  - name: o
+    src: https://raw.githubusercontent.com/rovell/emoji/main/o.png
+  - name: okaygebusiness
+    src: https://raw.githubusercontent.com/rovell/emoji/main/okaygebusiness.png
+  - name: okmen
+    src: https://raw.githubusercontent.com/rovell/emoji/main/okmen.png
+  - name: oo
+    src: https://raw.githubusercontent.com/rovell/emoji/main/oo.png
+  - name: p
+    src: https://raw.githubusercontent.com/rovell/emoji/main/p.png
+  - name: p2p
+    src: https://raw.githubusercontent.com/rovell/emoji/main/p2p.png
+  - name: parrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/parrot.gif
+  - name: partyparrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/partyparrot.gif
+  - name: paw
+    src: https://raw.githubusercontent.com/rovell/emoji/main/paw.gif
+  - name: peepo_arrive
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peepo_arrive.gif
+  - name: peepo_shy
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peepo_shy.gif
+  - name: peepoarrive
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peepoarrive.gif
+  - name: peepoblanket
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peepoblanket.png
+  - name: peepoconfused
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peepoconfused.gif
+  - name: peeporiot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peeporiot.gif
+  - name: peeporot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peeporot.gif
+  - name: peeporun
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peeporun.gif
+  - name: peepotoxic
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peepotoxic.gif
+  - name: peer2peer
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peer2peer.png
+  - name: pepe-big-eyes
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepe-big-eyes.gif
+  - name: pepe_ban
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepe_ban.gif
+  - name: pepe_clap
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepe_clap.gif
+  - name: pepe_clown_hype
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepe_clown_hype.gif
+  - name: pepe_crush
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepe_crush.gif
+  - name: pepe_furious
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepe_furious.gif
+  - name: pepechill
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepechill.png
+  - name: pepegiggle
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepegiggle.gif
+  - name: peperain
+    src: https://raw.githubusercontent.com/rovell/emoji/main/peperain.gif
+  - name: pepesad
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepesad.png
+  - name: pepewoo
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pepewoo.png
+  - name: pheart
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pheart.png
+  - name: pika_shoked_2
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pika_shoked_2.gif
+  - name: pir
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pir.jpeg
+  - name: pogslide
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pogslide.gif
+  - name: pp
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pp.png
+  - name: prayge
+    src: https://raw.githubusercontent.com/rovell/emoji/main/prayge.gif
+  - name: pressf
+    src: https://raw.githubusercontent.com/rovell/emoji/main/pressf.png
+  - name: q
+    src: https://raw.githubusercontent.com/rovell/emoji/main/q.png
+  - name: qq
+    src: https://raw.githubusercontent.com/rovell/emoji/main/qq.png
+  - name: r
+    src: https://raw.githubusercontent.com/rovell/emoji/main/r.png
+  - name: rainbowpls
+    src: https://raw.githubusercontent.com/rovell/emoji/main/rainbowpls.gif
+  - name: ratjam
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ratjam.gif
+  - name: rickroll
+    src: https://raw.githubusercontent.com/rovell/emoji/main/rickroll.gif
+  - name: rr
+    src: https://raw.githubusercontent.com/rovell/emoji/main/rr.png
+  - name: s
+    src: https://raw.githubusercontent.com/rovell/emoji/main/s.png
+  - name: shiza
+    src: https://raw.githubusercontent.com/rovell/emoji/main/shiza.gif
+  - name: ss
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ss.png
+  - name: stonks
+    src: https://raw.githubusercontent.com/rovell/emoji/main/stonks.png
+  - name: sussy
+    src: https://raw.githubusercontent.com/rovell/emoji/main/sussy.gif
+  - name: swole_doge
+    src: https://raw.githubusercontent.com/rovell/emoji/main/swole_doge.png
+  - name: t
+    src: https://raw.githubusercontent.com/rovell/emoji/main/t.png
+  - name: think_about_it
+    src: https://raw.githubusercontent.com/rovell/emoji/main/think_about_it.png
+  - name: thinking_homer
+    src: https://raw.githubusercontent.com/rovell/emoji/main/thinking_homer.gif
+  - name: thisisfine
+    src: https://raw.githubusercontent.com/rovell/emoji/main/thisisfine.gif
+  - name: tired_corgi
+    src: https://raw.githubusercontent.com/rovell/emoji/main/tired_corgi.gif
+  - name: toxic_sign
+    src: https://raw.githubusercontent.com/rovell/emoji/main/toxic_sign.gif
+  - name: tt
+    src: https://raw.githubusercontent.com/rovell/emoji/main/tt.png
+  - name: u
+    src: https://raw.githubusercontent.com/rovell/emoji/main/u.png
+  - name: ultra_fast_parrot
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ultra_fast_parrot.gif
+  - name: uu
+    src: https://raw.githubusercontent.com/rovell/emoji/main/uu.png
+  - name: uuuuu
+    src: https://raw.githubusercontent.com/rovell/emoji/main/uuuuu.png
+  - name: vi
+    src: https://raw.githubusercontent.com/rovell/emoji/main/v.png
+  - name: vv
+    src: https://raw.githubusercontent.com/rovell/emoji/main/vv.png
+  - name: w
+    src: https://raw.githubusercontent.com/rovell/emoji/main/w.png
+  - name: what
+    src: https://raw.githubusercontent.com/rovell/emoji/main/what.jpeg
+  - name: where
+    src: https://raw.githubusercontent.com/rovell/emoji/main/where.gif
+  - name: ww
+    src: https://raw.githubusercontent.com/rovell/emoji/main/ww.png
+  - name: x
+    src: https://raw.githubusercontent.com/rovell/emoji/main/x.png
+  - name: xx
+    src: https://raw.githubusercontent.com/rovell/emoji/main/xx.png
+  - name: y
+    src: https://raw.githubusercontent.com/rovell/emoji/main/y.png
+  - name: yy
+    src: https://raw.githubusercontent.com/rovell/emoji/main/yy.png
+  - name: z
+    src: https://raw.githubusercontent.com/rovell/emoji/main/z.png
+  - name: zz
+    src: https://raw.githubusercontent.com/rovell/emoji/main/zz.png
+  - name: ladoga
+    src:
+  - name: valday
+    src:
+  - name: ilmen
+    src:
