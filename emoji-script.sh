@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # ======================== КОНСТАНТЫ ========================
-REPO_URL="https://github.com/m-koloy/emoji"
-YAML_URL="https://raw.githubusercontent.com/m-koloy/emoji/refs/heads/main/School21.yaml"
+REPO_URL="https://github.com/d-soldatovv/emoji-automat"
+YAML_URL="https://raw.githubusercontent.com/d-soldatovv/emoji-automat/refs/heads/main/School21.yaml"
 
 # ======================== ЦВЕТА ========================
 RED='\033[0;31m'
