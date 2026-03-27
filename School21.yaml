@@ -339,8 +339,8 @@ emojis:
   - name: zz
     src: https://raw.githubusercontent.com/rovell/emoji/main/zz.png
   - name: ladoga
-    src:
+    src: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/ladoga.png
   - name: valday
-    src:
+    src: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/valday.png
   - name: ilmen
-    src:
+    src: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/ilmen.png
