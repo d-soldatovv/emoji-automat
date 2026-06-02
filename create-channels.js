@@ -16,12 +16,13 @@ const CONCURRENT_INVITES = 5;
  * @param {string}   opts.serverUrl
  * @param {string}   opts.username
  * @param {string}   opts.password
- * @param {string}   opts.yamlUrl          — URL channels.yaml
- * @param {string[]} [opts.volunteerNames] — список username волонтёров для добавления во все каналы
+ * @param {string}   opts.yamlUrl
+ * @param {string[]} [opts.volunteerNames]
  */
 async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [] }) {
   logger.banner('Создание каналов → Rocket.Chat');
 
+  // ── Авторизация ──────────────────────────────────────────────────
   logger.info('Авторизация на сервере...');
   const client = await RocketChatClient.login(serverUrl, username, password);
   logger.ok('Авторизация успешна');
@@ -47,16 +48,14 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
     client.getExistingChannelsMap(),
     client.getExistingGroupsMap(),
   ]);
-  logger.ok(
-    `Уже существует: ${channelsMap.size} публичных, ${groupsMap.size} приватных`
-  );
+  logger.ok(`Уже существует: ${channelsMap.size} публичных, ${groupsMap.size} приватных`);
 
-  // ── userId всех волонтёров (нужен для invite) ────────────────────
+  // ── userId всех волонтёров ───────────────────────────────────────
   let volunteerUserIds = [];
   if (volunteerNames.length > 0) {
     logger.info(`Получение userId для ${volunteerNames.length} волонтёров...`);
-    const usersMap    = await client.getAllUsersMap();
-    volunteerUserIds  = volunteerNames
+    const usersMap   = await client.getAllUsersMap();
+    volunteerUserIds = volunteerNames
       .map((name) => {
         const id = usersMap.get(name);
         if (!id) logger.warn(`userId не найден для @${name} — пропуск`);
@@ -82,9 +81,9 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
 
     const isPrivate   = channel.private === true;
     const existingMap = isPrivate ? groupsMap : channelsMap;
-    const type        = isPrivate ? 'приватный' : 'публичный';
+    const type        = isPrivate ? 'закрытый' : 'открытый';
 
-    // ── Уже существует — только добавляем волонтёров ────────────────
+    // ── Канал уже существует — только добавляем волонтёров ──────────
     if (existingMap.has(channel.name)) {
       const roomId = existingMap.get(channel.name);
       logger.skip(`Уже существует (${type}): #${channel.name}`);
@@ -97,13 +96,7 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
     }
 
     // ── Объединяем участников: из yaml + волонтёры ───────────────────
-    const members = [
-      ...(channel.members ?? []),
-      ...volunteerNames,
-    ];
-
-    // Дедупликация
-    const uniqueMembers = [...new Set(members)];
+    const uniqueMembers = [...new Set([...(channel.members ?? []), ...volunteerNames])];
 
     const payload = {
       name:        channel.name,
@@ -124,12 +117,22 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
         roomId = ch._id;
       }
 
-      logger.ok(`Создан (${type}): #${channel.name} [${uniqueMembers.length} участников]`);
+      logger.ok(`Создан (${type}): #${channel.name} [участников: ${uniqueMembers.length}]`);
       created++;
 
-      // ── Загрузка аватара канала ────────────────────────────────────
+      // ── Устанавливаем default отдельным вызовом после создания ──────
+      if (channel.default === true) {
+        try {
+          await client.setRoomDefault(roomId, true);
+          logger.ok(`  По умолчанию: ✅ #${channel.name}`);
+        } catch (err) {
+          logger.warn(`  Не удалось установить default для #${channel.name}: ${err.message}`);
+        }
+      }
+
+      // ── Загружаем аватар ─────────────────────────────────────────────
       if (channel.avatar) {
-        await uploadAvatar(client, roomId, channel.name, channel.avatar, isPrivate);
+        await uploadAvatar(client, roomId, channel.name, channel.avatar);
       }
 
     } catch (err) {
@@ -141,8 +144,8 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
   return { created, skipped, failed };
 }
 
-// ─── Загрузка аватара ────────────────────────────────────────────
-async function uploadAvatar(client, roomId, channelName, avatarUrl, isPrivate) {
+// ─── Загрузка аватара ─────────────────────────────────────────────
+async function uploadAvatar(client, roomId, channelName, avatarUrl) {
   try {
     logger.info(`  Загрузка аватара для #${channelName}...`);
 
@@ -153,7 +156,7 @@ async function uploadAvatar(client, roomId, channelName, avatarUrl, isPrivate) {
     const file = avatarUrl.split('/').pop().split('?')[0];
     const ext  = file.split('.').pop().toLowerCase() || 'png';
 
-    await client.setRoomAvatar(roomId, Buffer.from(imageBuffer), ext, isPrivate);
+    await client.setRoomAvatar(roomId, Buffer.from(imageBuffer), ext);
     logger.ok(`  Аватар установлен для #${channelName}`);
   } catch (err) {
     // Не фатальная ошибка — канал уже создан
@@ -161,7 +164,7 @@ async function uploadAvatar(client, roomId, channelName, avatarUrl, isPrivate) {
   }
 }
 
-// ─── Добавление волонтёров в существующий канал ──────────────────
+// ─── Добавление волонтёров в существующий канал ───────────────────
 async function inviteVolunteers(client, roomId, userIds, channelName, isPrivate) {
   logger.info(`  Добавление волонтёров в #${channelName}...`);
 
@@ -180,7 +183,6 @@ async function inviteVolunteers(client, roomId, userIds, channelName, isPrivate)
           }
           added++;
         } catch (err) {
-          // Пользователь уже в канале — не ошибка
           if (!err.message.includes('already')) {
             logger.warn(`    Не удалось добавить userId=${userId}: ${err.message}`);
             errors++;
@@ -195,7 +197,7 @@ async function inviteVolunteers(client, roomId, userIds, channelName, isPrivate)
 
 module.exports = main;
 
-// ─── Прямой запуск ───────────────────────────────────────────────
+// ─── Прямой запуск ────────────────────────────────────────────────
 if (require.main === module) {
   (async () => {
     const serverUrl = process.env.ROCKETCHAT_SERVER_URL;
