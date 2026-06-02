@@ -1,150 +1,118 @@
-const request = require("request");
-const yaml = require("js-yaml");
-const readline = require("readline");
+'use strict';
 
-require("dotenv").config();
+require('dotenv').config();
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const axios              = require('axios');
+const yaml               = require('js-yaml');
+const pLimit             = require('p-limit');
+const RocketChatClient   = require('./lib/client');
+const logger             = require('./lib/logger');
 
-const rocketchatServerUrl = process.env.ROCKETCHAT_SERVER_URL || "";
-const adminUsername = process.env.ADMIN_USERNAME || "";
-const adminPassword = process.env.ADMIN_PASSWORD || "";
+const CONCURRENT_UPLOADS = 5;
 
-function promptForValue(message, currentValue, callback) {
-  if (currentValue) {
-    callback(currentValue);
-  } else {
-    rl.question(message, (value) => {
-      callback(value);
-    });
-  }
-}
+// ─── Основная логика ──────────────────────────────────────────────
+async function main({ serverUrl, username, password, yamlUrl }) {
+  logger.banner('Импорт эмодзи → Rocket.Chat');
 
-function fetchExistingEmojis(authToken, userId, callback) {
-  request.get(
-    {
-      url: `${rocketchatServerUrl}/api/v1/emoji-custom.list`,
-      headers: {
-        "X-Auth-Token": authToken,
-        "X-User-Id": userId,
-      },
-      json: true,
-    },
-    (error, response, body) => {
-      if (error) {
-        console.error("Error fetching existing emojis:", error);
-        return;
-      }
+  logger.info('Авторизация на сервере...');
+  const client = await RocketChatClient.login(serverUrl, username, password);
+  logger.ok('Авторизация успешна');
 
-      const existingEmojiNames = body.emojis ? body.emojis.update.map((emoji) => emoji.name) : [];
-      callback(existingEmojiNames);
+  logger.info(`Загрузка YAML: ${yamlUrl}`);
+  let emojiList;
+  try {
+    const { data } = await axios.get(yamlUrl);
+    const parsed   = yaml.load(data);
+    emojiList      = parsed?.emojis;
+    if (!Array.isArray(emojiList) || emojiList.length === 0) {
+      throw new Error('Список эмодзи пуст или имеет неверный формат');
     }
+  } catch (err) {
+    throw new Error(`Не удалось загрузить/распарсить YAML: ${err.message}`);
+  }
+  logger.ok(`Найдено в YAML: ${emojiList.length} эмодзи`);
+
+  logger.info('Получение списка существующих эмодзи...');
+  const existing = await client.getExistingEmojiNames();
+  logger.ok(`Уже есть на сервере: ${existing.size}`);
+  logger.divider();
+
+  const toUpload = emojiList.filter((emoji) => {
+    if (existing.has(emoji.name)) {
+      logger.skip(`Уже существует: :${emoji.name}:`);
+      return false;
+    }
+    return true;
+  });
+
+  if (toUpload.length === 0) {
+    logger.ok('Все эмодзи уже загружены — ничего нового.');
+    return { uploaded: 0, skipped: emojiList.length, failed: 0 };
+  }
+
+  logger.info(`К загрузке: ${toUpload.length} (параллельно по ${CONCURRENT_UPLOADS})`);
+  logger.divider();
+
+  const limit  = pLimit(CONCURRENT_UPLOADS);
+  let uploaded = 0;
+  let failed   = 0;
+
+  await Promise.all(
+    toUpload.map((emoji) =>
+      limit(async () => {
+        const file     = emoji.src.split('/').pop();
+        const dotIndex = file.lastIndexOf('.');
+        const filename = file.substring(0, dotIndex);
+        const ext      = file.substring(dotIndex + 1).toLowerCase();
+
+        try {
+          const { data: imageBuffer } = await axios.get(emoji.src, {
+            responseType: 'arraybuffer',
+          });
+          await client.uploadEmoji(
+            emoji.name,
+            Buffer.from(imageBuffer),
+            filename,
+            ext
+          );
+          logger.ok(`Загружен: :${emoji.name}:`);
+          uploaded++;
+        } catch (err) {
+          logger.error(`Ошибка [${emoji.name}]: ${err.message}`);
+          failed++;
+        }
+      })
+    )
   );
+
+  return { uploaded, skipped: emojiList.length - toUpload.length, failed };
 }
 
-promptForValue("URL for YAML file? ", "", (emojiYamlUrl) => {
-  promptForValue("Rocket.Chat server URL? ", rocketchatServerUrl, (finalRocketchatServerUrl) => {
-    promptForValue("Rocket.Chat admin username? ", adminUsername, (finalAdminUsername) => {
-      promptForValue("Rocket.Chat admin password? ", adminPassword, (finalAdminPassword) => {
-        rl.close();
+module.exports = main;
 
-        // Login to Rocket.Chat
-        request.post(
-          {
-            url: `${rocketchatServerUrl}/api/v1/login`,
-            json: {
-              user: adminUsername,
-              password: adminPassword,
-            },
-          },
-          (loginError, loginResponse, loginBody) => {
-            if (loginError || !loginBody.data) {
-              console.error("Error logging in:", loginError || loginBody.message);
-              return;
-            }
+// ─── Прямой запуск ───────────────────────────────────────────────
+if (require.main === module) {
+  (async () => {
+    const serverUrl = process.env.ROCKETCHAT_SERVER_URL;
+    const username  = process.env.ADMIN_USERNAME;
+    const password  = process.env.ADMIN_PASSWORD;
+    const yamlUrl   = process.env.EMOJI_YAML_URL;
 
-            const authToken = loginBody.data.authToken;
-            const userId = loginBody.data.userId;
+    if (!serverUrl || !username || !password || !yamlUrl) {
+      logger.error('Заданы не все переменные окружения. Используйте emoji-script.sh');
+      process.exit(1);
+    }
 
-            fetchExistingEmojis(authToken, userId, (existingEmojiNames) => {
-              request(emojiYamlUrl, (error, response, body) => {
-                if (error) {
-                  console.error("Error fetching YAML:", error);
-                  return;
-                }
-
-                const emojiYaml = yaml.load(body);
-                const emojis = emojiYaml["emojis"];
-
-                let uploadedEmojisCount = 0;
-
-                for (const emoji of emojis) {
-                  const url = emoji.src;
-                  const file = url.split("/").pop();
-                  const [name, ext] = file.split(".");
-
-                  if (existingEmojiNames.includes(name)) {
-                    console.log(`Emoji ${name} already exists, skipping upload`);
-                    continue;
-                  }
-
-                  request.get(url, { encoding: null }, (imageError, imageResponse, imageData) => {
-                    if (imageError) {
-                      console.error("Error downloading image:", imageError);
-                      return;
-                    }
-
-                    request.post(
-                      {
-                        url: `${rocketchatServerUrl}/api/v1/emoji-custom.create`,
-                        headers: {
-                          "X-Auth-Token": authToken,
-                          "X-User-Id": userId,
-                        },
-                        formData: {
-                          name: emoji.name,
-                          aliases: "",
-                          emoji: {
-                            value: imageData,
-                            options: {
-                              filename: `${name}.${ext}`,
-                              contentType: `image/${ext}`,
-                            },
-                          },
-                        },
-                      },
-                      (uploadError, uploadResponse, uploadBody) => {
-                        if (uploadError) {
-                          console.error("Error uploading emoji:" + emoji.name + " - Error: ", uploadError);
-                          return;
-                        }
-
-                        const uploadResponseBody = JSON.parse(uploadBody);
-
-                        if (!uploadResponseBody.success) {
-                          console.error("Error uploading emoji: " + emoji.name + " - Error: ", uploadResponseBody.error);
-                          return;
-                        }
-
-                        console.log(`Successfully added a new emoji: ${emoji.name}`);
-
-                        uploadedEmojisCount++;
-
-                        if (uploadedEmojisCount === emojis.length) {
-                          console.log(`Successfully added ${uploadedEmojisCount} new emojis`);
-                        }
-                      }
-                    );
-                  });
-                }
-              });
-            });
-          }
-        );
+    try {
+      const { uploaded, skipped, failed } = await main({
+        serverUrl, username, password, yamlUrl,
       });
-    });
-  });
-});
+      logger.divider();
+      logger.ok(`Загружено: ${uploaded} | Пропущено: ${skipped} | Ошибок: ${failed}`);
+      if (failed > 0) process.exit(1);
+    } catch (err) {
+      logger.error(err.message);
+      process.exit(1);
+    }
+  })();
+}

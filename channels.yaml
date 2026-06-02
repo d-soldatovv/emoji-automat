@@ -1,0 +1,107 @@
+# ─────────────────────────────────────────────────────────────────
+# Каналы Rocket.Chat — School 21
+# ─────────────────────────────────────────────────────────────────
+# Волонтёры добавляются во все каналы автоматически скриптом.
+# В поле members указываются ТОЛЬКО не-волонтёры (АДМ, саппорты).
+# ─────────────────────────────────────────────────────────────────
+
+channels:
+
+  # ──────────────────────────────────────────────
+  #  ОТКРЫТЫЕ КАНАЛЫ
+  # ──────────────────────────────────────────────
+
+  - name: general
+    private: false
+    readOnly: false
+    default: true
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/general.png
+
+  - name: announcements
+    private: false
+    readOnly: true
+    default: true
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/announcments.png
+
+  - name: random
+    private: false
+    readOnly: false
+    default: true
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/random.png
+
+  - name: adm
+    private: false
+    readOnly: false
+    default: true
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/adm.png
+
+
+
+  - name: services
+    private: false
+    readOnly: false
+    default: true
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/services.png
+
+
+
+  # ──────────────────────────────────────────────
+  #  ЗАКРЫТЫЕ КАНАЛЫ — ПО УМОЛЧАНИЮ
+  # ──────────────────────────────────────────────
+
+  - name: support
+    private: true
+    readOnly: false
+    default: true
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/sup.png
+
+
+  # ──────────────────────────────────────────────
+  #  ЗАКРЫТЫЕ КАНАЛЫ — ТРАЙБЫ
+  #  Переименуй под реальные названия трайбов
+  # ──────────────────────────────────────────────
+
+  - name: valday
+    private: true
+    readOnly: false
+    default: false
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/valday.png
+
+
+  - name: ilmen
+    private: true
+    readOnly: false
+    default: false
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/ilmen.png
+   
+
+
+  - name: ladoga
+    private: true
+    readOnly: false
+    default: false
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/ladoga.png
+
+
+
+  # ──────────────────────────────────────────────
+  #  ЗАКРЫТЫЕ КАНАЛЫ — ВОЛОНТЁРЫ + АДМ + САППОРТ
+  # ──────────────────────────────────────────────
+
+  - name: support_helpers
+    private: true
+    readOnly: false
+    default: false
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/support_helpers.png
+
+  - name: exam
+    private: true
+    readOnly: false
+    default: false
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/exam.png
+
+  - name: first_day
+    private: true
+    readOnly: false
+    default: false
+    avatar: https://raw.githubusercontent.com/d-soldatovv/emoji-automat/main/emoji/first_day.png
