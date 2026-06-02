@@ -1,26 +1,42 @@
 # ─────────────────────────────────────────────────────────────────
 # Список волонтёров School 21
 # ─────────────────────────────────────────────────────────────────
-# Правила (применяются автоматически):
+# Правила (применяются автоматически скриптом):
 #   email    → username@student.21-school.ru
-#   password → username  (волонтёр обязан сменить при первом входе)
+#   password → username (смена пароля обязательна при первом входе)
 #   роль     → user
-#
-# Обязательное поле:
-#   username — никнейм в системе School 21
-#
-# Опциональное поле:
-#   name — отображаемое имя (если не указано, используется username)
 # ─────────────────────────────────────────────────────────────────
 
 users:
-  - username: ivan.petrov
-    name: Иван Петров
+  - username: draharle
+    name: Дима
 
-  - username: maria.sidorova
-    name: Мария Сидорова
+  - username: sharikel
+    name: Сергей
 
-  - username: alex.volkov
+  - username: thedabea
+    name: Надя
 
-  - username: daria.novak
-    name: Дарья Новак
+  - username: adelljug
+    name: Ксюша
+
+  - username: harwinfl
+    name: Настя
+
+  - username: marvamyr
+    name: Ульяна
+
+  - username: joyeusem
+    name: Саша
+
+  - username: alisiahu
+    name: Максим
+
+  - username: snowpee
+    name: Костя
+
+  - username: amberlyp
+    name: Вова
+
+  - username: assassid
+    name: Ярослав
