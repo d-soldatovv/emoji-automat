@@ -8,26 +8,20 @@ const pLimit           = require('p-limit');
 const RocketChatClient = require('./lib/client');
 const logger           = require('./lib/logger');
 
-const CONCURRENT_INVITES = 5;
+const CONCURRENT_INVITES  = 5;
+const RATE_LIMIT_DELAY_MS = 2000; // пауза между saveRoomSettings вызовами
+
+// ─── Утилита: пауза ───────────────────────────────────────────────
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // ─── Основная логика ──────────────────────────────────────────────
-/**
- * @param {object}   opts
- * @param {string}   opts.serverUrl
- * @param {string}   opts.username
- * @param {string}   opts.password
- * @param {string}   opts.yamlUrl
- * @param {string[]} [opts.volunteerNames]
- */
 async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [] }) {
   logger.banner('Создание каналов → Rocket.Chat');
 
-  // ── Авторизация ──────────────────────────────────────────────────
   logger.info('Авторизация на сервере...');
   const client = await RocketChatClient.login(serverUrl, username, password);
   logger.ok('Авторизация успешна');
 
-  // ── Загрузка channels.yaml ───────────────────────────────────────
   logger.info(`Загрузка YAML: ${yamlUrl}`);
   let channelList;
   try {
@@ -42,7 +36,6 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
   }
   logger.ok(`Найдено в YAML: ${channelList.length} каналов`);
 
-  // ── Существующие каналы ──────────────────────────────────────────
   logger.info('Получение существующих каналов...');
   const [channelsMap, groupsMap] = await Promise.all([
     client.getExistingChannelsMap(),
@@ -50,7 +43,6 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
   ]);
   logger.ok(`Уже существует: ${channelsMap.size} публичных, ${groupsMap.size} приватных`);
 
-  // ── userId всех волонтёров ───────────────────────────────────────
   let volunteerUserIds = [];
   if (volunteerNames.length > 0) {
     logger.info(`Получение userId для ${volunteerNames.length} волонтёров...`);
@@ -67,7 +59,6 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
 
   logger.divider();
 
-  // ── Создание каналов ─────────────────────────────────────────────
   let created = 0;
   let skipped = 0;
   let failed  = 0;
@@ -83,7 +74,7 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
     const existingMap = isPrivate ? groupsMap : channelsMap;
     const type        = isPrivate ? 'закрытый' : 'открытый';
 
-    // ── Канал уже существует — только добавляем волонтёров ──────────
+    // ── Канал уже существует ─────────────────────────────────────────
     if (existingMap.has(channel.name)) {
       const roomId = existingMap.get(channel.name);
       logger.skip(`Уже существует (${type}): #${channel.name}`);
@@ -95,7 +86,6 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
       continue;
     }
 
-    // ── Объединяем участников: из yaml + волонтёры ───────────────────
     const uniqueMembers = [...new Set([...(channel.members ?? []), ...volunteerNames])];
 
     const payload = {
@@ -120,8 +110,9 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
       logger.ok(`Создан (${type}): #${channel.name} [участников: ${uniqueMembers.length}]`);
       created++;
 
-      // ── Устанавливаем default отдельным вызовом после создания ──────
+      // ── default — ждём перед вызовом ────────────────────────────────
       if (channel.default === true) {
+        await sleep(RATE_LIMIT_DELAY_MS);
         try {
           await client.setRoomDefault(roomId, true);
           logger.ok(`  По умолчанию: ✅ #${channel.name}`);
@@ -130,8 +121,9 @@ async function main({ serverUrl, username, password, yamlUrl, volunteerNames = [
         }
       }
 
-      // ── Загружаем аватар ─────────────────────────────────────────────
+      // ── аватар — ждём перед вызовом ─────────────────────────────────
       if (channel.avatar) {
+        await sleep(RATE_LIMIT_DELAY_MS);
         await uploadAvatar(client, roomId, channel.name, channel.avatar);
       }
 
@@ -159,12 +151,11 @@ async function uploadAvatar(client, roomId, channelName, avatarUrl) {
     await client.setRoomAvatar(roomId, Buffer.from(imageBuffer), ext);
     logger.ok(`  Аватар установлен для #${channelName}`);
   } catch (err) {
-    // Не фатальная ошибка — канал уже создан
     logger.warn(`  Не удалось загрузить аватар для #${channelName}: ${err.message}`);
   }
 }
 
-// ─── Добавление волонтёров в существующий канал ───────────────────
+// ─── Добавление волонтёров ────────────────────────────────────────
 async function inviteVolunteers(client, roomId, userIds, channelName, isPrivate) {
   logger.info(`  Добавление волонтёров в #${channelName}...`);
 

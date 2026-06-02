@@ -7,14 +7,9 @@ const yaml             = require('js-yaml');
 const RocketChatClient = require('./lib/client');
 const logger           = require('./lib/logger');
 
-// ─── Константы для волонтёров School 21 ──────────────────────────
 const EMAIL_DOMAIN = 'student.21-school.ru';
 const DEFAULT_ROLE = 'user';
 
-// ─── Основная логика ──────────────────────────────────────────────
-/**
- * @returns {{ created: number, skipped: number, failed: number, createdUsernames: string[] }}
- */
 async function main({ serverUrl, username, password, yamlUrl }) {
   logger.banner('Создание волонтёров → Rocket.Chat');
 
@@ -41,50 +36,42 @@ async function main({ serverUrl, username, password, yamlUrl }) {
   logger.ok(`Уже зарегистрировано: ${existing.size}`);
   logger.divider();
 
-  let created          = 0;
-  let skipped          = 0;
-  let failed           = 0;
+  let created            = 0;
+  let skipped            = 0;
+  let failed             = 0;
   const createdUsernames = [];
 
   for (const user of userList) {
-    // username — единственное обязательное поле
     if (!user.username) {
       logger.error(`Пропущена запись — нет поля username: ${JSON.stringify(user)}`);
       failed++;
       continue;
     }
 
-    const login = user.username.trim().toLowerCase();
+    const login    = user.username.trim().toLowerCase();
+    const userPass = `s21_${login}`;
 
     if (existing.has(login)) {
       logger.skip(`Уже существует: @${login}`);
-      // Даже если пользователь уже есть — учитываем его для добавления в каналы
       createdUsernames.push(login);
       skipped++;
       continue;
     }
 
-    // Правила для волонтёров School 21:
-    //   email    = username@student.21-school.ru
-    //   password = username
-    //   роль     = user
-    //   смена пароля при первом входе = обязательно
-    const userData = {
-      username:             login,
-      email:                `${login}@${EMAIL_DOMAIN}`,
-      password:             login,
-      name:                 user.name || login,
-      roles:                [DEFAULT_ROLE],
-      active:               true,
-      verified:             true,
-      joinDefaultChannels:  false,   // добавим вручную в нужные каналы
-      requirePasswordChange: true,   // обязательная смена пароля
-      sendWelcomeEmail:     false,
-    };
-
     try {
-      await client.createUser(userData);
-      logger.ok(`Создан: @${login} (${userData.email})`);
+      await client.createUser({
+        username:              login,
+        email:                 `${login}@${EMAIL_DOMAIN}`,
+        password:              userPass,
+        name:                  login,        // name = username
+        roles:                 [DEFAULT_ROLE],
+        active:                true,
+        verified:              true,
+        joinDefaultChannels:   false,
+        requirePasswordChange: true,
+        sendWelcomeEmail:      false,
+      });
+      logger.ok(`Создан: @${login} | pass: ${userPass} | email: ${login}@${EMAIL_DOMAIN}`);
       createdUsernames.push(login);
       created++;
     } catch (err) {
@@ -98,7 +85,6 @@ async function main({ serverUrl, username, password, yamlUrl }) {
 
 module.exports = main;
 
-// ─── Прямой запуск ───────────────────────────────────────────────
 if (require.main === module) {
   (async () => {
     const serverUrl = process.env.ROCKETCHAT_SERVER_URL;

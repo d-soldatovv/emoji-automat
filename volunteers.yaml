@@ -3,40 +3,20 @@
 # ─────────────────────────────────────────────────────────────────
 # Правила (применяются автоматически скриптом):
 #   email    → username@student.21-school.ru
-#   password → username (смена пароля обязательна при первом входе)
+#   password → s21_username (смена пароля обязательна при первом входе)
 #   роль     → user
+#   name     → username
 # ─────────────────────────────────────────────────────────────────
 
 users:
   - username: draharle
-    name: Дима
-
   - username: sharikel
-    name: Сергей
-
   - username: thedabea
-    name: Надя
-
   - username: adelljug
-    name: Ксюша
-
   - username: harwinfl
-    name: Настя
-
   - username: marvamyr
-    name: Ульяна
-
   - username: joyeusem
-    name: Саша
-
   - username: alisiahu
-    name: Максим
-
   - username: snowpee
-    name: Костя
-
   - username: amberlyp
-    name: Вова
-
   - username: assassid
-    name: Ярослав
